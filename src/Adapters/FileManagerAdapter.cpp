@@ -26,8 +26,9 @@ std::unique_ptr<std::string>  FileManagerAdapter::parseFiles(){
             int i = 0;
             while (readFileIndex) {
                 // ToDo : Add line number ?
-                filebuffer << "[" << std::to_string(i) << "]" << readFileIndex.rdbuf();
-                *parseString = filebuffer.str();
+                //Current used one is not working correctl
+                filebuffer << readFileIndex.rdbuf();
+                *parseString += filebuffer.str();
                 readFileIndex.close();
 
             }

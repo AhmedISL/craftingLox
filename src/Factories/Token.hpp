@@ -15,6 +15,7 @@ using litralOptions = std::variant<std::monostate, int, std::string, long, float
 
 class  Token {
     public:
+    Token() = delete;
     Token(TokenType type, int line, std::string& lexem, litralOptions litral);
 
     private:

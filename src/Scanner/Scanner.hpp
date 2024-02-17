@@ -21,8 +21,8 @@ class Scanner{
     bool isAtEnd();
     bool isAlpha() const;
     bool isDigit() const;
-    bool isWhiteSpace() const;
-    bool isNewLine;
+    bool isWhiteSpace();
+    void skipWhitSpace();
     bool isAlphaNumeric();
     std::string getIdentifier();
     int getNumber();
@@ -32,7 +32,7 @@ class Scanner{
     std::vector<Token> m_Tokens;
     int m_startIndex{0};
     int m_currentIndex{0};
-    int m_line;
+    int m_line{1}; //with every new line increament this value to keep track of  line number
     static int m_currentLineNumber;
     std::unique_ptr<std::string> m_inputCode;
 };
