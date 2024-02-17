@@ -1,4 +1,5 @@
 #include "FileManagerAdapter.hpp"
+#include <iostream>
 #include <memory>
 #include <sstream>
 #include <fstream>
@@ -37,27 +38,44 @@ std::unique_ptr<std::string>  FileManagerAdapter::parseFiles(){
     return  std::move(parseString);
 }
 
-void FileManagerAdapter::getNeededSourceFiles(char* mainSourceDirectoryPath){
+void FileManagerAdapter::getNeededSourceFiles(std::string mainSourceDirectoryPath){
 
     //this function is based on: https://www.tutorialspoint.com/how-can-i-get-the-list-of-files-in-a-directory-using-c-or-cplusplus
     DIR *dh;
-    struct dirent * contents; 
-    
-    dh = opendir ( mainSourceDirectoryPath );
+    dh = opendir ( mainSourceDirectoryPath.c_str() );
     
     if ( !dh )
     {
         std::cout << "The given directory is not found";
         return;
     }
+    struct dirent * contents;
 
     while ( ( contents = readdir ( dh ) ) != NULL )
     {
-        std::string name = contents->d_name;
-        std::cout << name << std::endl;
-        filePaths.push_back(name);
-        
-        // If the file is a directory, recursively call this function to get all
+        std::string filename = contents->d_name;
+        if(filename != "." && filename != ".."){
+            std::string name = std::string(mainSourceDirectoryPath) + "/" + contents->d_name;
+            /*check if currently read file is directory
+                yes ->  read the file names inside this diectory 
+                no ->   add file path to the filepaths vector
+            */
+            if (contents->d_type == DT_DIR) {
+                getNeededSourceFiles(name);
+            }
+            else{
+                std::cout << name << std::endl;
+                if(name.find(".hpp") != std::string::npos || name.find(".cpp") != std::string::npos)
+                {
+                    std::cout << "a file .hpp or .cpp was found, file will be added to list" << std::endl;
+                    filePaths.push_back(name);
+                }
+                else {
+                    std::cout << "a file is not .hpp or .cpp, file will be discarded to list" << std::endl;
+                }
+                
+            }
+        }
     }
 
     closedir ( dh );

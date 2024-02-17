@@ -27,7 +27,7 @@ Scanner::Scanner(std::unique_ptr<std::string> inputCode, std::shared_ptr<TokenFa
 }
 
 char Scanner::advance(){
-    return  (*m_inputCode)[++m_currentIndex];
+    return  (*m_inputCode)[m_currentIndex++];
 }
 
 char Scanner::peek() const{
@@ -176,17 +176,17 @@ void Scanner::scanTokens(){
                         }
                     }else if (match('*')){
                         //skip the multiline comment
-                        bool isMultiline = true;
+                        bool isMultiLine = true;
                         while(!isAtEnd()) {
                             if (peek() == '*' && peekNext() ==  '/'){
-                                isMultiline = false;
+                                isMultiLine = false;
                                 advance();
                                 advance();
                                 break;
                             }
                             advance();
                         }
-                        if (isMultiline){
+                        if (isMultiLine){
                             std::stringstream ss;
                             ss << "Unclosed multi-line comment." << std::to_string(m_line);
                             throw ss.str();

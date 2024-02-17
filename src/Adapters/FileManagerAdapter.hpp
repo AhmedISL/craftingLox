@@ -50,7 +50,7 @@ class FileManagerAdapter{
      * 
      * @param mainSourceDirectoryPathe 
      */
-    void getNeededSourceFiles(char* mainSourceDirectoryPath);
+    void getNeededSourceFiles(std::string mainSourceDirectoryPath);
 
     private:
     FileManagerAdapter();
