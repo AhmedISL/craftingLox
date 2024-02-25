@@ -35,7 +35,7 @@ class FileManagerAdapter{
      * 
      * @return std::string 
      */
-    std::unique_ptr<std::string> parseFiles();
+    std::shared_ptr<std::string> parseFiles();
     
     /**
      * @brief Get the File Name given filepath

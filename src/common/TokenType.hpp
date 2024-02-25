@@ -1,5 +1,6 @@
 #include <cstdint>
 #include <iostream>
+#include <map>
 
 enum class TokenType :  uint8_t 
 {
@@ -11,6 +12,7 @@ enum class TokenType :  uint8_t
     BOOL,
     STRING,
     AUTO,
+    NUMBER,
     /*CONTAINERS*/
     STRUCT,         //struct
     UNION,          //union
@@ -21,7 +23,6 @@ enum class TokenType :  uint8_t
     STACK,          //stack<>
     /*Variables*/
     IDENTIFIER,
-    CONST_IDENTIFIER,
     /*Operations*/
     ADD,            //+
     SUB,            //-
@@ -43,6 +44,7 @@ enum class TokenType :  uint8_t
     SHIFTRIGHT,     //>>
     ADDEQ,          //+=
     SUBEQ,          //-=
+    MULEQ,          //*=
     /*BIT OPERTATORS*/
     BITAND,         //&
     BITOR,          //|
@@ -78,7 +80,7 @@ enum class TokenType :  uint8_t
     SEMICOLON,      //;
     COMMA,          //,
     QUOTE,          //"
-    POINTER,        //*
+    // POINTER,        //*       ->shouldn't be handled in scanning phase
     DOT,            //.
     ARROW,          //->
     /*MACRO*/
@@ -97,5 +99,10 @@ enum class TokenType :  uint8_t
     OVERRIDE,
     FINAL,
     DELETE,
-    DEFAULT
+    DEFAULT,
+    TRY,
+    THROW,
+    CATCH,
+    NULL_PTR,
+    UNKNOWN
 };

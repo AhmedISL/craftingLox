@@ -16,19 +16,20 @@ std::string FileManagerAdapter::getFileName(std::string filePath){
     return filePath.substr(filePath.find_last_of("/\\") + 1);
 }
 
-std::unique_ptr<std::string>  FileManagerAdapter::parseFiles(){
-    std::stringstream filebuffer;
-    std::unique_ptr<std::string> parseString(new std::string);
+std::shared_ptr<std::string>  FileManagerAdapter::parseFiles(){
+    std::shared_ptr<std::string> parseString(new std::string);
 
     for(auto file : filePaths){
+        std::stringstream filebuffer;
         std::ifstream readFileIndex (file);
 
         if(readFileIndex.is_open()){
-            int i = 0;
-            while (readFileIndex) {
+            if (readFileIndex) {
                 // ToDo : Add line number ?
                 //Current used one is not working correctl
+                //need to add a closure for file end to  get the last line and restart the line counting
                 filebuffer << readFileIndex.rdbuf();
+                filebuffer <<  "\n";
                 *parseString += filebuffer.str();
                 readFileIndex.close();
 
@@ -71,7 +72,7 @@ void FileManagerAdapter::getNeededSourceFiles(std::string mainSourceDirectoryPat
                     filePaths.push_back(name);
                 }
                 else {
-                    std::cout << "a file is not .hpp or .cpp, file will be discarded to list" << std::endl;
+                    std::cout << "a file is not .hpp or .cpp, file will be discarded" << std::endl;
                 }
                 
             }

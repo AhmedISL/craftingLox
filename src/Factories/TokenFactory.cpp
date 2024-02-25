@@ -4,7 +4,7 @@
 #include <memory>
 #include <string>
 
-void TokenFactory::registerToken(std::string lexem, std::function<std::shared_ptr<Token> (int, std::string)> cbk)
+void TokenFactory::registerToken(std::string lexem, tokenCallback cbk)
 {
     if(m_TokenMap.find(lexem) != m_TokenMap.end()){
         std::cout << "Token is already registered" <<std::endl;
@@ -15,9 +15,20 @@ void TokenFactory::registerToken(std::string lexem, std::function<std::shared_pt
     
 }
 
-std::shared_ptr<Token> TokenFactory::createToken(std::string lexem, int lineNo, TokenType type){
-    auto newToken =  std::make_shared<Token>(type,lineNo,lexem,lexem);
-    return newToken;
+std::unique_ptr<Token> TokenFactory::getToken(std::string lexem, int lineNo, TokenType type){
+    auto newToken =  std::make_unique<Token>(type,lineNo,lexem,lexem);
+    return std::move(newToken);
+}
+
+std::unique_ptr<Token> TokenFactory::createToken(std::string lexem, int lineNo, TokenType type){
+    if  (m_TokenMap.find(lexem) == m_TokenMap.end()) {
+        registerToken(lexem, [&](int lineNo_cbk,std::string lexem_cbk){return getToken(lexem_cbk,lineNo_cbk,type);});
+        return std::move(m_TokenMap[lexem](lineNo, lexem));
+    }
+    else {
+        return std::move(m_TokenMap[lexem](lineNo,lexem));
+    }
+    
 }
 
 
