@@ -4,6 +4,8 @@
 #include <memory>
 #include <string>
 
+std::unordered_map<std::string, tokenCallback> TokenFactory::m_TokenMap;
+
 void TokenFactory::registerToken(std::string lexem, tokenCallback cbk)
 {
     if(m_TokenMap.find(lexem) != m_TokenMap.end()){
@@ -23,12 +25,11 @@ std::unique_ptr<Token> TokenFactory::getToken(std::string lexem, int lineNo, Tok
 std::unique_ptr<Token> TokenFactory::createToken(std::string lexem, int lineNo, TokenType type){
     if  (m_TokenMap.find(lexem) == m_TokenMap.end()) {
         registerToken(lexem, [&](int lineNo_cbk,std::string lexem_cbk){return getToken(lexem_cbk,lineNo_cbk,type);});
-        return std::move(m_TokenMap[lexem](lineNo, lexem));
+        
     }
     else {
-        return std::move(m_TokenMap[lexem](lineNo,lexem));
     }
-    
+    return std::move(m_TokenMap[lexem](lineNo, lexem));
 }
 
 
