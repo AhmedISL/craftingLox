@@ -16,7 +16,8 @@ using litralOptions = std::variant<std::monostate, int, std::string, long, float
 class  Token {
     public:
     Token() = delete;
-    Token(TokenType type, int line, std::string& lexem, litralOptions litral);
+    Token(std::string lexem, int line, TokenType type, litralOptions litral);
+    TokenType getTokenType();
 
     private:
     TokenType m_type;

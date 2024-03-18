@@ -13,6 +13,7 @@ enum class TokenType :  uint8_t
     STRING,
     AUTO,
     NUMBER,
+    TEXT,
     /*CONTAINERS*/
     STRUCT,         //struct
     UNION,          //union
@@ -32,6 +33,7 @@ enum class TokenType :  uint8_t
     OR,             //||
     NOT,            //!
     EQ,             //==
+    TERNARY,
     GREATERTHAN,    //>
     LESSTHAN,       //<
     GREATEREQUAL,   //>=
@@ -80,7 +82,7 @@ enum class TokenType :  uint8_t
     SEMICOLON,      //;
     COMMA,          //,
     QUOTE,          //"
-    // POINTER,        //*       ->shouldn't be handled in scanning phase
+    POINTER,        //*       ->shouldn't be handled in scanning phase
     DOT,            //.
     ARROW,          //->
     /*MACRO*/

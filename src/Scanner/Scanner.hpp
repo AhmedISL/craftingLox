@@ -11,7 +11,7 @@
 
 class Scanner{
     public:
-    Scanner(std::shared_ptr<std::string> inputCode,std::shared_ptr<TokenFactory> tokenFactory);
+    Scanner(std::shared_ptr<std::string> inputCode);
     void scanTokens();
     private:
     bool match(char expectedChar);
@@ -30,7 +30,7 @@ class Scanner{
     std::string getString();
     // add function to check if the indentifier is a built in identifier or not
     bool isBuiltInIdentifier(std::string);
-    std::shared_ptr<TokenFactory> m_tokenFactory;
+    // std::shared_ptr<TokenFactory> m_tokenFactory;
     std::vector<std::unique_ptr<Token>> m_Tokens;
     int m_startIndex{0};
     int m_currentIndex{0};

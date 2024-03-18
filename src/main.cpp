@@ -17,8 +17,8 @@ int main(int argc, char *argv[])
             std::string mainDir = argv[0];
             FileManagerAdapter::getInstance().getNeededSourceFiles(mainDir);
             std::shared_ptr<std::string> code = FileManagerAdapter::getInstance().parseFiles();
-            std::shared_ptr<TokenFactory>  tokenFactory = std::make_shared<TokenFactory>();
-            Scanner scanner(std::move(code),tokenFactory);
+            Scanner scanner(std::move(code));
+            scanner.scanTokens();
         }
     }
     catch (std::exception e) {

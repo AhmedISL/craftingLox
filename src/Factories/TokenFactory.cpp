@@ -4,32 +4,30 @@
 #include <memory>
 #include <string>
 
-std::unordered_map<std::string, tokenCallback> TokenFactory::m_TokenMap;
+std::unordered_map<TokenType, tokenCallback> TokenFactory::m_TokenMap;
 
-void TokenFactory::registerToken(std::string lexem, tokenCallback cbk)
+void TokenFactory::registerToken(TokenType type, tokenCallback cbk)
 {
-    if(m_TokenMap.find(lexem) != m_TokenMap.end()){
+    if(m_TokenMap.find(type) != m_TokenMap.end()){
         std::cout << "Token is already registered" <<std::endl;
     }
     else{
-        m_TokenMap.insert({lexem,cbk}); 
+        m_TokenMap.insert({type,cbk}); 
     }
     
 }
 
+void TokenFactory::unregisterToken(TokenType type)
+{
+    if(m_TokenMap.find(type) != m_TokenMap.end()){
+        m_TokenMap.erase(type); 
+    }
+    else{
+        std::cout << "Token is not registered" <<std::endl;
+    }
+}
+
 std::unique_ptr<Token> TokenFactory::getToken(std::string lexem, int lineNo, TokenType type){
-    auto newToken =  std::make_unique<Token>(type,lineNo,lexem,lexem);
-    return std::move(newToken);
+    auto  it = m_TokenMap.find(type);
+    return std::move(it->second(lineNo, lexem));
 }
-
-std::unique_ptr<Token> TokenFactory::createToken(std::string lexem, int lineNo, TokenType type){
-    if  (m_TokenMap.find(lexem) == m_TokenMap.end()) {
-        registerToken(lexem, [&](int lineNo_cbk,std::string lexem_cbk){return getToken(lexem_cbk,lineNo_cbk,type);});
-        
-    }
-    else {
-    }
-    return std::move(m_TokenMap[lexem](lineNo, lexem));
-}
-
-
